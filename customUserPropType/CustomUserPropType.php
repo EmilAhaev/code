@@ -1,5 +1,5 @@
 <?AddEventHandler('iblock', 'OnIBlockPropertyBuildList', array('CCustomTypeStuff', 'GetUserTypeDescription')); 
-
+//короч все значения после serialize надо хранить $value['VALUE'], а не в   DESCRIPTION, тогда всё будет ок
 class CCustomTypeStuff 
 {
 
