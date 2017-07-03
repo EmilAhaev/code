@@ -1,0 +1,41 @@
+Для добавления капчи необходимо:
+
+Скопировать компонент sender.subscribe в своё пространство имён.
+Мы будем добавлять в компонент проверку введённой капчи, а если редактировать исходный компонент sender.subscribe в пространстве имён bitrix, то при установке обновлений Битрикса есть риск потерять все свои изменения.
+В шаблоне сайта заменить компонент bitrix:sender.subscribe на свой.
+Создать шаблон для своего компонента sender.subscribe.
+Шаблон отвечает за вывод капчи, поэтому его мы тоже будем модифицировать.
+Далее — самое интересное.
+
+В шаблоне компонента добавляем генерирование капчи. Для этого помещаем в него следующий код:
+
+// подключаем файл модуля капчи
+include_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/captcha.php");
+
+// создаем объект капчи
+$cpt = new CCaptcha();
+
+// достаём значение параметра captcha_password из главного модуля
+$captchaPass = COption::GetOptionString("main", "captcha_password", "");
+
+// если строка пуста, генерируем случайное значение
+If (strlen($captchaPass) <= 0) {
+    $captchaPass = randString(10);
+    COption::SetOptionString("main", "captcha_password", $captchaPass); }
+
+$cpt->SetCodeCrypt($captchaPass);
+Несмотря на то, что пролог уже подключён, без первой строчки не заработало.
+
+Далее добавляем картинку капчи и поле для её ввода:
+<input name="captcha_code"value="<?=htmlspecialchars($cpt->GetCodeCrypt());?>"type="hidden">
+
+<img src="/bitrix/tools/captcha.php?captcha_code=<?=htmlspecialchars($cpt->GetCodeCrypt());?>">
+
+<input id="captcha_word"name="captcha_word"type="text">
+В коде компонента добавляем проверку:
+
+if($APPLICATION->CaptchaCheckCode($_POST["captcha_word"], $_POST["captcha_code"])){
+    echo 'Всё верно!';
+} else {
+    echo 'Неправильно введен код с картинки!';
+}
