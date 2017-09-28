@@ -10,13 +10,15 @@ if (!empty($arResult['IBLOCK_SECTION_ID'])) {
         $arFilter = ['ID' => $sectionIds, 'IBLOCK_ID' => $arResult['IBLOCK_ID']];
         $arSelect = ['UF_SKU_TYPE', 'ID'];
         $rsSections = CIBlockSection::GetList(array(), $arFilter, false, $arSelect, false);  
-        while($section = $rsSections->Fetch()) {
+       while($section = $rsSections->Fetch()) {
             if (!empty($section['UF_SKU_TYPE'])) {
                 if ($section['UF_SKU_TYPE'] == 13) {
-                    $arParams['TYPE_SKU'] = 'TYPE_1';    
+                    $arParams['TYPE_SKU'] = 'TYPE_1';
+                    break;    
                     
                 } elseif ($section['UF_SKU_TYPE'] == 14) {
-                    $arParams['TYPE_SKU'] = 'TYPE_2';        
+                    $arParams['TYPE_SKU'] = 'TYPE_2';
+                    break;        
                 }
             }     
         }
