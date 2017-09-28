@@ -1,0 +1,25 @@
+Для аспро переопределяем тип СКУ в зависимости от значению свойства в разделе или вышестоящем разделе
+
+if (!empty($arResult['IBLOCK_SECTION_ID'])) {
+    $resSection = CIBlockSection::GetNavChain($arResult['IBLOCK_ID'], $arResult['IBLOCK_SECTION_ID'], array('ID'));
+    $sectionIds = [];
+    while ($arSection = $resSection->Fetch()) {
+        $sectionIds[] = $arSection['ID'];
+    }
+    if (!empty($sectionIds) && count($sectionIds) > 0) {
+        $arFilter = ['ID' => $sectionIds, 'IBLOCK_ID' => $arResult['IBLOCK_ID']];
+        $arSelect = ['UF_SKU_TYPE', 'ID'];
+        $rsSections = CIBlockSection::GetList(array(), $arFilter, false, $arSelect, false);  
+        while($section = $rsSections->Fetch()) {
+            if (!empty($section['UF_SKU_TYPE'])) {
+                if ($section['UF_SKU_TYPE'] == 13) {
+                    $arParams['TYPE_SKU'] = 'TYPE_1';    
+                    
+                } elseif ($section['UF_SKU_TYPE'] == 14) {
+                    $arParams['TYPE_SKU'] = 'TYPE_2';        
+                }
+            }     
+        }
+    }
+    
+}
