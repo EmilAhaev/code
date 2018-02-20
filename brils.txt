@@ -1,0 +1,12 @@
+В ядре делал правки, сохраню тут.
+
+1 ) /bitrix/modules/yenisite.bbs/classes/general/CYSBbsInit.php";
+
+метод OnSalePayOrder  - кусок установки времени действия платной функции
+
+if (!empty($arBasketTmp['QUANTITY']) && $arBasketTmp['QUANTITY'] > 1) {
+    $optionTime = ConvertTimeStamp($timestamp + $arItem['PROPERTY_DURATION_VALUE'] * 86400 * (int)$arBasketTmp['QUANTITY']);
+    CIBlockElement::SetPropertyValues($arBasketTmp['PRODUCT_PRICE_ID'], $IBLOCK_ID, $optionTime, $propCode.'_DATE');       
+} else {
+    CIBlockElement::SetPropertyValues($arBasketTmp['PRODUCT_PRICE_ID'], $IBLOCK_ID, ConvertTimeStamp($timestamp+$arItem['PROPERTY_DURATION_VALUE']*86400), $propCode.'_DATE');    
+}
