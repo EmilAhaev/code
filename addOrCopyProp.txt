@@ -1,0 +1,37 @@
+<? //дял копирования свойств из одного ИБ в другой, можно воспользоваться вот таких нехитрым скриптом
+$IBLOCK_ID_PROJECT = '5';
+$IBLOCK_ID_SERVICES = '4';
+
+CModule::IncludeModule("iblock");
+
+$proplist = CIBlockProperty::GetList(Array("SORT"=>"ASC"), Array("IBLOCK_ID"=>$IBLOCK_ID_PROJECT));
+
+while ($prop = $proplist->Fetch()) {
+      
+    if (strpos($prop['CODE'], 'PHOTO_') !== false) {    //какие-то условия, если не все свойства надо копировать
+        if (!in_array($prop['CODE'], $stopListCodes)) {  
+
+            $arFields = Array(                 //созданеи массива данных, для разных типов полей немного отличается
+                "NAME" => $prop['NAME'],
+                "ACTIVE" => "Y",
+                "SORT" => $prop['SORT'],
+                "CODE" => $prop['CODE'],
+                "PROPERTY_TYPE" => $prop['PROPERTY_TYPE'],
+                "FILE_TYPE" => $prop['FILE_TYPE'],
+                "VERSION" => $prop['VERSION'],
+                "USER_TYPE" => $prop['USER_TYPE'],
+                "MULTIPLE" => $prop['MULTIPLE'],
+                "IS_REQUIRED" => $prop['IS_REQUIRED'],
+                "IBLOCK_ID" => $IBLOCK_ID_SERVICES,
+            );
+          
+            $ibp = new CIBlockProperty;
+            $PropID = $ibp->Add($arFields);
+            
+        }
+    }
+    
+    
+}
+
+?>
