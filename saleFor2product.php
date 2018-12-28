@@ -1,4 +1,4 @@
-<? // /bitrix/modules/sale/lib/discount.php    2771   инклудим этот верехватчик в ядро
+<? // /bitrix/modules/sale/lib/discount.php    2771   инклудим этот перехватчик в ядро
 require_once ('CustomApplyDiscount.php');
 if ($discount['ID'] == 12 || $discount['ID'] == 13) {
     $discount['APPLICATION'] = str_replace('\Bitrix\Sale\Discount\Actions::applyToBasket', 'CustomApplyDiscount::applyToBasket', $discount['APPLICATION']);
