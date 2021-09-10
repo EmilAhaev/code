@@ -23,7 +23,7 @@ function getDeliveryPriceForProduct($bitrixProductId, $siteId, $userId, $personT
 
     $orderProperties = $order->getPropertyCollection();
     $orderDeliveryLocation = $orderProperties->getDeliveryLocation();
-    $orderDeliveryLocation->setField('VALUE', "0000073738");
+    $orderDeliveryLocation->setField('VALUE', $userCityId);
 
     $shipmentCollection = $order->getShipmentCollection();
     $shipment = $shipmentCollection->createItem();
